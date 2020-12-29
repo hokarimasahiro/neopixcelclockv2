@@ -14,7 +14,9 @@ radio.onReceivedNumber(function (receivedNumber) {
     } else if (receivedNumber == 11) {
         メッセージ切替()
     } else if (receivedNumber == 8) {
+        music.setBuiltInSpeakerEnabled(true)
         soundExpression.happy.playUntilDone()
+        music.setBuiltInSpeakerEnabled(false)
     } else if (receivedNumber == 12) {
     	
     } else if (receivedNumber == 13) {
@@ -71,14 +73,7 @@ function シフト表示 (fontlist: string, 表示位置: number) {
         return 表示位置 + 2
     }
 }
-input.onButtonPressed(Button.A, function () {
-    文字色切替()
-})
-function メッセージ切替 () {
-    メッセージ番号 += 1
-    if (メッセージ番号 > メッセージリスト.length) {
-        メッセージ番号 = 0
-    }
+function メッセージ設定 () {
     if (メッセージ番号 < メッセージリスト.length) {
         メッセージ = メッセージリスト[メッセージ番号]
         if (メッセージ.length > 64) {
@@ -96,6 +91,16 @@ function メッセージ切替 () {
             strip.show()
         }
     }
+}
+input.onButtonPressed(Button.A, function () {
+    文字色切替()
+})
+function メッセージ切替 () {
+    メッセージ番号 += 1
+    if (メッセージ番号 > メッセージリスト.length) {
+        メッセージ番号 = 0
+    }
+    メッセージ設定()
 }
 function 文字色切替 () {
     if (文字色 == neopixel.colors(NeoPixelColors.Red)) {
@@ -205,22 +210,22 @@ let SuZuka_YosHida = "64929292924C003C0202043E0082868A92A2C2003C0202043E00FE0814
 let welcom = "F8061806F8001C2A2A1A80FE001C2222001C22221C001E201E201E001C2A2A1A"
 let suzuka = "649292924C003C02023E00868A92A2C2003C02023E00FE08142200042A2A1E00"
 メッセージリスト = [welcome_SuZuka, SuZuka_YosHida, welcom]
-メッセージ番号 = 3
+メッセージ番号 = 0
 文字色 = neopixel.colors(NeoPixelColors.Indigo)
 背景色 = neopixel.colors(NeoPixelColors.Black)
 let 最大輝度 = 255
 let 最小輝度 = 5
-メッセージ切替()
+メッセージ設定()
 radio.setGroup(1)
 basic.forever(function () {
     時刻 = rtc.getDatetime()
-    輝度 = Math.constrain(input.lightLevel(), 最小輝度, 最大輝度)
-    strip.setBrightness(輝度 / 5)
-    strip2.setBrightness(輝度 / 5)
+    輝度 = Math.trunc(input.lightLevel() / 50) * 10 + 最小輝度
+    strip.setBrightness(輝度)
+    strip2.setBrightness(輝度)
     if (メッセージ番号 >= メッセージリスト.length) {
         時刻表示()
     } else if (メッセージ番号 >= メッセージリスト.length - 1) {
-        if (Math.trunc(時刻 / 3) % 2 == 0) {
+        if (Math.trunc(時刻 / 2) % 2 == 0) {
             固定表示(welcom)
         } else {
             固定表示(suzuka)
@@ -235,7 +240,7 @@ basic.forever(function () {
 })
 control.inBackground(function () {
     while (true) {
-        watchfont.plotBarGraph(input.soundLevel())
+        watchfont.plotBarGraph(input.lightLevel())
         basic.pause(100)
     }
 })
