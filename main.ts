@@ -123,6 +123,17 @@ function 文字色切替 () {
         文字色 = neopixel.colors(NeoPixelColors.Red)
     }
 }
+serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
+    受信データ = serial.readUntil(serial.delimiters(Delimiters.NewLine)).split(",")
+    rtc.setDatetime(rtc.convDateTime(
+    parseFloat(受信データ[0]),
+    parseFloat(受信データ[1]),
+    parseFloat(受信データ[2]),
+    parseFloat(受信データ[3]),
+    parseFloat(受信データ[4]),
+    parseFloat(受信データ[5])
+    ))
+})
 input.onButtonPressed(Button.B, function () {
     メッセージ切替()
 })
@@ -158,7 +169,7 @@ function 時刻表示 () {
         }
         if (秒 < 30) {
             if (秒 > index3) {
-                strip.setPixelColor(POS, neopixel.rgb(0, 16, 0))
+                strip.setPixelColor(POS, neopixel.rgb(0, 127, 0))
             } else {
                 strip.setPixelColor(POS, neopixel.colors(NeoPixelColors.Black))
             }
@@ -166,7 +177,7 @@ function 時刻表示 () {
             if (秒 - 30 > index3) {
                 strip.setPixelColor(POS, neopixel.colors(NeoPixelColors.Black))
             } else {
-                strip.setPixelColor(POS, neopixel.rgb(0, 16, 0))
+                strip.setPixelColor(POS, neopixel.rgb(0, 127, 0))
             }
         }
     }
@@ -177,6 +188,7 @@ let 時計文字 = ""
 let 秒 = 0
 let 分 = 0
 let 時 = 0
+let 受信データ: string[] = []
 let 表示位置 = 0
 let メッセージ = ""
 let POS2 = 0
@@ -205,18 +217,17 @@ strip2 = neopixel.create(DigitalPin.P1, 256, NeoPixelMode.RGB)
 strip2.clear()
 strip2.show()
 行末空白 = 8
-let welcome_SuZuka = "F80618601806F8001C2A2A2A180080FE001C222222001C2222221C003E201E201E001C2A2A2A1800000064929292924C003C0202043E0082868A92A2C2003C0202043E00FE08142200042A2A2A1E00"
-let SuZuka_YosHida = "64929292924C003C0202043E0082868A92A2C2003C0202043E00FE08142200042A2A2A1E0000008040201E204080001C2222221C00122A2A2A2400FE10101010FE00BE001C222212FE00042A2A2A1E00"
-let welcom = "F8061806F8001C2A2A1A80FE001C2222001C22221C001E201E201E001C2A2A1A"
-let suzuka = "649292924C003C02023E00868A92A2C2003C02023E00FE08142200042A2A1E00"
-メッセージリスト = [welcome_SuZuka, SuZuka_YosHida, welcom]
-メッセージ番号 = 0
-文字色 = neopixel.colors(NeoPixelColors.Indigo)
+let CoderDojo_TodaKoen = "384482828244001C2222221C001C222212FE001C2A2A2A18003E1020201000FE8282824438001C2222221C00040202BC001C2222221C0082BCA8A8A8B88000FE9292FE9292FE001222C61AC2241200FEA6FAEEFAA6FE00"
+let Todakoen_14 = "42FE02000C142444FE0400FE82BAAABA82FE00384482828244001C2222221C001C222212FE001C2A2A2A18003E1020201000FE8282824438001C2222221C00040202BC001C2222221C0082BCA8A8A8B88000FE9292FE9292FE001222C61AC2241200FEA6FAEEFAA6FE00"
+メッセージリスト = [CoderDojo_TodaKoen, Todakoen_14]
+メッセージ番号 = 2
+文字色 = neopixel.colors(NeoPixelColors.Purple)
 背景色 = neopixel.colors(NeoPixelColors.Black)
 let 最大輝度 = 255
-let 最小輝度 = 5
+let 最小輝度 = 2
 メッセージ設定()
 radio.setGroup(1)
+serial.redirectToUSB()
 basic.forever(function () {
     時刻 = rtc.getDatetime()
     輝度 = Math.trunc(input.lightLevel() / 50) * 10 + 最小輝度
@@ -224,13 +235,6 @@ basic.forever(function () {
     strip2.setBrightness(輝度)
     if (メッセージ番号 >= メッセージリスト.length) {
         時刻表示()
-    } else if (メッセージ番号 >= メッセージリスト.length - 1) {
-        if (Math.trunc(時刻 / 2) % 2 == 0) {
-            固定表示(welcom)
-        } else {
-            固定表示(suzuka)
-        }
-        strip.show()
     } else {
         if (メッセージ.length > 64) {
             表示位置 = シフト表示(メッセージ, 表示位置)

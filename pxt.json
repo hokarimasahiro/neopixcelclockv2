@@ -6,7 +6,7 @@
         "radio": "*",
         "microphone": "*",
         "neopixel": "github:microsoft/pxt-neopixel#v0.7.3",
-        "bit": "github:hokarimasahiro/pxt-bitoperation#87d57edd3c3494fdd536c9f241fce0d972b0025a",
+        "bit": "github:hokarimasahiro/pxt-bitoperation#9f456c39bc7d49db269479dceac21d46dea41420",
         "pxt-rtc": "github:hokarimasahiro/pxt-rtc#59f3c43461a9138a35e5933baa673d1fe349ad3b",
         "pxt-watchfont": "github:hokarimasahiro/pxt-watchfont#d5e3bf68305bc0ea0b17a19000a6f7f340f7f792"
     },
