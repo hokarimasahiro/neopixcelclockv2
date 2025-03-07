@@ -5,10 +5,10 @@
         "core": "*",
         "radio": "*",
         "microphone": "*",
-        "neopixel": "github:microsoft/pxt-neopixel#v0.7.3",
-        "bit": "github:hokarimasahiro/pxt-bitoperation#9f456c39bc7d49db269479dceac21d46dea41420",
-        "pxt-rtc": "github:hokarimasahiro/pxt-rtc#59f3c43461a9138a35e5933baa673d1fe349ad3b",
-        "pxt-watchfont": "github:hokarimasahiro/pxt-watchfont#d5e3bf68305bc0ea0b17a19000a6f7f340f7f792"
+        "neopixel": "github:microsoft/pxt-neopixel#v0.7.6",
+        "bit": "github:hokarimasahiro/pxt-bitoperation#1aaa1b128df94a2d18b603d34e2dae3e738ca420",
+        "pxt-rtc": "github:hokarimasahiro/pxt-rtc#752a2f0fb247e4d0446c18b582b1b74ae78ba7b7",
+        "pxt-watchfont": "github:hokarimasahiro/pxt-watchfont#cf8c8fa5ae14fd43a48526edacc3f94c0537ada8"
     },
     "files": [
         "main.blocks",
